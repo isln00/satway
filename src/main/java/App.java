@@ -13,9 +13,7 @@ import nl.siegmann.epublib.epub.EpubWriter;
 public class App {
     public static final String RAW_PAGES = "src/main/resources/raw/";
     public static final String ARTICLE_PAGES = "src/main/resources/xhtml/";
-
     private static final FileNameComparator FILE_NAME_COMPARATOR = new FileNameComparator();
-
     private static final boolean RELOAD_INDEX = false;
     private static final boolean RELOAD_ARTICLES = false;
     private static final boolean REMAKE_XHTMLS = true;

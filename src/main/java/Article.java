@@ -15,7 +15,6 @@ import org.jsoup.nodes.Document;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Article {
-
     public static final String XHTML_PATH = "src/main/resources/xhtml/";
     private final String path;
     private final File file;
@@ -27,10 +26,7 @@ public class Article {
     private static final Pattern titlePattern = Pattern.compile("title=\"(?<title>[\\w\\W]*?)\"");
     private static final Pattern imgPattern = Pattern.compile("<img[\\w\\W]*?>");
     private final String url;
-
     private final String xhtml;
-
-    //insert title and body
     private static final String xhtmlTemplate = "<!DOCTYPE html>\n" +
         "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
         "<head>\n" +
