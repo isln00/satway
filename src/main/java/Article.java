@@ -22,7 +22,7 @@ public class Article {
     private final String date;
     private static final Pattern paragraphsPattern = Pattern.compile("<section class=\"entry-content\">(?<flesh>[\\w\\W]*?)</section>");
     private static final Pattern articleUrlPattern = Pattern
-        .compile("(?<full><a href=\"(?<url>https?://satway\\.ru/(articles|blog|faq)/[\\w-]+/?)[\\w\\W]*?</a>)");
+        .compile("(?<full><a( title=\"[\\w\\W]*?\")? href=\"(?<url>https?://satway\\.ru/(articles|blog|faq)/[\\w-]+/?)[\\w\\W]*?</a>)");
     private static final Pattern titlePattern = Pattern.compile("title=\"(?<title>[\\w\\W]*?)\"");
     private final String url;
     private final String xhtml;
@@ -80,16 +80,27 @@ public class Article {
         if (paragraphMatcher.find()) {
             stub = paragraphMatcher.group("flesh");
         }
+
+        stub = stub.replaceAll("&nbsp", "&#160");
+
         Matcher urlMatcher = articleUrlPattern.matcher(stub);
         String url;
-        while (urlMatcher.find()) {
-            url = urlMatcher.group("url");
-            String linkToChapter = urlToFilename.get(url
-                .replaceAll("blog|faq", "articles")
+        String urlOrig;
 
-                .replaceAll("http://", "https://"));
+        while (urlMatcher.find()) {
+            urlOrig = urlMatcher.group("url");
+
+            url = urlOrig
+                .replaceAll("blog|faq", "articles")
+                .replaceAll("http://", "https://");
+
+            if (!url.endsWith("/")) {
+                url = url +  "/";
+            }
+
             try {
-                stub = stub.replaceAll(url, linkToChapter);
+                String linkToChapter = urlToFilename.get(url);
+                stub = stub.replaceAll(urlOrig, linkToChapter);
                 System.out.println(url + " -> " + linkToChapter + " in " + this.file);
             } catch (NullPointerException e) {
                 String full = urlMatcher.group("full");
