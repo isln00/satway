@@ -86,7 +86,6 @@ public class Loader {
         }
     }
 
-
     public static List<String> extractHrefsFromIndex(String index) {
 
         Map<String, LocalDateTime> hrefDates = new HashMap<>();

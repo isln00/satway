@@ -22,9 +22,8 @@ public class Article {
     private final String date;
     private static final Pattern paragraphsPattern = Pattern.compile("<section class=\"entry-content\">(?<flesh>[\\w\\W]*?)</section>");
     private static final Pattern articleUrlPattern = Pattern
-        .compile("(?<full><a href=\"(?<url>https?://satway\\.ru/(articles|blog)/[\\w-]+/?)[\\w\\W]*?</a>)");
+        .compile("(?<full><a href=\"(?<url>https?://satway\\.ru/(articles|blog|faq)/[\\w-]+/?)[\\w\\W]*?</a>)");
     private static final Pattern titlePattern = Pattern.compile("title=\"(?<title>[\\w\\W]*?)\"");
-    private static final Pattern imgPattern = Pattern.compile("<img[\\w\\W]*?>");
     private final String url;
     private final String xhtml;
     private static final String xhtmlTemplate = "<!DOCTYPE html>\n" +
@@ -39,7 +38,6 @@ public class Article {
         "<a href=\"%s\">Оригинал статьи на сайте</a></p>\n" +
         "</body>\n" +
         "</html>";
-
     private static final Map<String, String> urlToFilename;
 
     static {
@@ -87,7 +85,8 @@ public class Article {
         while (urlMatcher.find()) {
             url = urlMatcher.group("url");
             String linkToChapter = urlToFilename.get(url
-                .replaceAll("blog", "articles")
+                .replaceAll("blog|faq", "articles")
+
                 .replaceAll("http://", "https://"));
             try {
                 stub = stub.replaceAll(url, linkToChapter);
